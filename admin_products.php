@@ -14,6 +14,7 @@ if(isset($_POST['add_product_button'])){
    // This is only for the "product" table
    $name = mysqli_real_escape_string($conn, $_POST['name']);
    $price = $_POST['price'];
+   
    $image = $_FILES['image']['name'];
    $image_size = $_FILES['image']['size'];
    $image_tmp_name = $_FILES['image']['tmp_name'];
