@@ -64,7 +64,7 @@ if(isset($_GET['delete'])){
          <p> Email : <span><?php echo $fetch_orders['email']; ?></span> </p>
          <p> Total Products : <span><?php echo $fetch_orders['total_products']; ?></span> </p>
          <p> Total Price : <span><?php echo $fetch_orders['total_price']; ?> TK</span> </p>
-         <p> Payment Method : <span><?php echo $fetch_orders['method']; ?></span> </p>
+         <p> Bkash Transaction : <span><?php echo $fetch_orders['bkash_transaction']; ?></span> </p>
          <form action="" method="post">
             <input type="hidden" name="order_id" value="<?php echo $fetch_orders['id']; ?>">
             <select name="update_payment">
