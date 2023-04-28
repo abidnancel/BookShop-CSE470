@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2023 at 10:49 AM
+-- Generation Time: Apr 29, 2023 at 12:42 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -68,6 +68,14 @@ CREATE TABLE `current_product_details` (
   `book_genre` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `current_product_details`
+--
+
+INSERT INTO `current_product_details` (`product_id`, `author_name`, `description`, `book_language`, `page_numbers`, `publication_date`, `book_genre`) VALUES
+(11, 'Kentaro Miura', 'Created by Kentaro Miura, Berserk is manga mayhem to the extreme - violent, horrifying, and mercilessly funny - and the wellspring for the internationally popular anime series. Not for the squeamish or the easily offended, Berserk asks for no quarter - and offers none!\r\nHis name is Guts, the Black Swordsman, a feared warrior spoken of only in whispers. Bearer of a gigantic sword, an iron hand, and the scars of countless battles and tortures, his flesh is also indelibly marked with The Brand, an unholy symbol that draws the forces of darkness to him and dooms him as their sacrifice. But Guts won\'t take his fate lying down; he\'ll cut a crimson swath of carnage through the ranks of the damned - and anyone else foolish enough to oppose him! Accompanied by Puck the Elf, more an annoyance than a companion, Guts relentlessly follows a dark, bloodstained path that leads only to death...or vengeance.', 'English', 696, '2019-04-19', 'Action'),
+(12, 'awe', 'awe', 'English', 231, '2023-04-20', 'Action');
+
 -- --------------------------------------------------------
 
 --
@@ -95,12 +103,26 @@ CREATE TABLE `orders` (
   `name` varchar(100) NOT NULL,
   `number` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `method` varchar(100) NOT NULL,
+  `bkash_transaction` varchar(100) DEFAULT NULL,
+  `offline_address` varchar(100) DEFAULT NULL,
   `total_products` varchar(1000) NOT NULL,
   `total_price` int(255) NOT NULL,
   `placed_on` varchar(50) NOT NULL,
-  `payment_status` varchar(20) NOT NULL DEFAULT 'pending'
+  `payment_status` varchar(20) NOT NULL DEFAULT 'pending',
+  `payment_method` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `bkash_transaction`, `offline_address`, `total_products`, `total_price`, `placed_on`, `payment_status`, `payment_method`) VALUES
+(1, 3, 'Tshirt', '0130', 'abid@gmail.com', 'Bkash', NULL, '1', 100, '01/10/2020', 'pending', ''),
+(3, 4, 'Anas Mahmud Abid', '123', '12@gmail.com', '123', NULL, ', Berserk Volume 1 (1) ', 5999, '25-Apr-2023', 'pending', ''),
+(4, 4, 'Offline Delivery', '213', 'offline@gmail.com', '', 'My address', ', Berserk Volume 1 (1) ', 5999, '28-Apr-2023', 'pending', ''),
+(5, 4, 'Berserk Online', '2313', 'online@gmail.com', '$#JIF_(#I$#(FUIO', '', ', Berserk Volume 1 (3) ', 17997, '28-Apr-2023', 'pending', ''),
+(6, 4, 'Total Online', '23123', '23@gmail.com', 'qwe213', '', ', weq (1) ', 232, '28-Apr-2023', 'pending', 'Online Delivery'),
+(7, 4, 'Test', '1234', '1234@gmail.com', '', 'My home', ', Berserk Volume 1 (1) ', 5999, '28-Apr-2023', 'pending', 'Physical Delivery');
 
 -- --------------------------------------------------------
 
@@ -114,6 +136,38 @@ CREATE TABLE `products` (
   `price` int(100) NOT NULL,
   `image` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `price`, `image`) VALUES
+(11, 'Berserk Volume 1', 5999, '9781506711980.jpg'),
+(12, 'weq', 232, '5.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_reviews`
+--
+
+CREATE TABLE `product_reviews` (
+  `review_id` int(100) NOT NULL,
+  `user_reviewer_id` int(100) NOT NULL,
+  `product_id` int(100) NOT NULL,
+  `reviewer_name` varchar(100) NOT NULL,
+  `user_rating` int(100) NOT NULL,
+  `review_details` varchar(100) NOT NULL,
+  `review_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_reviews`
+--
+
+INSERT INTO `product_reviews` (`review_id`, `user_reviewer_id`, `product_id`, `reviewer_name`, `user_rating`, `review_details`, `review_time`) VALUES
+(2, 0, 11, 'Nancel', 0, 'Masterpiece', '2023-04-28 20:27:56'),
+(3, 4, 11, 'user', 4, 'The book was good', '2023-04-28 22:37:33');
 
 -- --------------------------------------------------------
 
@@ -130,6 +184,14 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `user_type`) VALUES
+(3, 'Abid', 'abid@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'admin'),
+(4, 'user', 'user@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'user');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -137,15 +199,13 @@ CREATE TABLE `users` (
 -- Indexes for table `admin_news`
 --
 ALTER TABLE `admin_news`
-  ADD PRIMARY KEY (`id`,`user_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`id`,`user_id`);
 
 --
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `current_product_details`
@@ -165,8 +225,7 @@ ALTER TABLE `message`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `products`
@@ -176,11 +235,16 @@ ALTER TABLE `products`
   ADD KEY `id` (`id`);
 
 --
+-- Indexes for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  ADD PRIMARY KEY (`review_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -196,7 +260,7 @@ ALTER TABLE `admin_news`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `message`
@@ -208,19 +272,25 @@ ALTER TABLE `message`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  MODIFY `review_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

@@ -71,6 +71,8 @@ if(isset($_POST['add_to_cart'])){
             while($fetch_products = mysqli_fetch_assoc($select_products)){
       ?>
      <form action="" method="post" class="box">
+      <br>
+      <br>
       <img class="image" src="uploaded_img/<?php echo $fetch_products['image']; ?>" alt="">
       <div class="name"><?php echo $fetch_products['name']; ?></div>
       <div class="price"><?php echo $fetch_products['price']; ?> TK</div>
@@ -105,7 +107,7 @@ if(isset($_POST['add_to_cart'])){
 
       <div class="content">
          <h3>about us</h3>
-         <p>We are a student of CSE370 Group 1</p>
+         <p>I am a student of CSE470</p>
          <a href="about.php" class="btn">read more</a>
       </div>
 

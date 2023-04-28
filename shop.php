@@ -119,7 +119,7 @@ if(isset($_POST['book_sort_button'])){
 <!-- This is for search, category, dropdown dropdown menu ENDS -->
 
 
-   <div class="box-container">
+<div class="box-container">
 
       <?php
          $book_category = $_SESSION['book_category'];
@@ -163,7 +163,7 @@ if(isset($_POST['book_sort_button'])){
             <input type="hidden" name="product_price" value="<?php echo $fetch_products['price']; ?>">
             <input type="hidden" name="product_image" value="<?php echo $fetch_products['image']; ?>">
             <input type="submit" value="add to cart" name="add_to_cart" class="btn">
-            <a href="shop.php?update=<?php echo $fetch_products['id']; ?>" class="btn">Book Details</a>
+            <a href="product_details.php?update=<?php echo $fetch_products['id']; ?>" class="btn">Book Details</a>
          </form>
             <?php
                }
@@ -175,40 +175,6 @@ if(isset($_POST['book_sort_button'])){
 
 </section>
 
-<section class="edit-product-form">
-
-   <?php
-      if(isset($_GET['update'])){
-         $book_detail_id = $_GET['update'];
-      $update_query = mysqli_query($conn, "SELECT * FROM `products` INNER JOIN `current_product_details` on products.id = current_product_details.product_id WHERE id = '{$book_detail_id}'") or die('query failed');
-         if(mysqli_num_rows($update_query) > 0){
-            while($fetch_update = mysqli_fetch_assoc($update_query)){
-   ?>
-         <form action="" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="update_book_id" value="<?php echo $fetch_update['id']; ?>">
-
-            <img src="uploaded_img/<?php echo $fetch_update['image']; ?>" alt="">
-            <p type="text" name="show_book_title" class="box" style="font-size: 20px; color: red;"><?php echo $fetch_update['name']; ?></p>
-            <p type="text" name="show_book_author_name" class="box" style="font-size: 15px; color: black;">Author: <?php echo $fetch_update['author_name']; ?></p>
-            <p type="text" name="show_book_title" class="box" style="font-size: 15px;">Genre: <?php echo $fetch_update['book_genre']; ?></p>
-            <textarea type="text" name="show_book_description" cols="30" rows="5" class="box" disabled><?php echo $fetch_update['description']; ?></textarea>
-            <p type="text" name="show_book_title" class="box" style="font-size: 15px;">Language: <?php echo $fetch_update['book_language']; ?></p>
-            <p type="text" name="show_book_title" class="box" style="font-size: 15px;">Pages: <?php echo $fetch_update['page_numbers']; ?></p>
-            <p type="text" name="show_book_title" class="box" style="font-size: 15px;">Publication Date: <?php echo $fetch_update['publication_date']; ?></p>
-
-            <!-- <input type="text" name="update_blog_type" value="<?php echo $fetch_update['blog_type']; ?>" class="box" required placeholder="Enter New Blog Title"> -->
-
-            <input type="reset" value="cancel" id="close-update" class="option-btn" onclick="window.location = 'shop.php'">
-         </form>
-   <?php
-         }
-      }
-      }else{
-         echo '<script>document.querySelector(".edit-product-form").style.display = "none";</script>';
-      }
-   ?>
-
-</section>
 
 
 

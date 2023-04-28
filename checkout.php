@@ -15,7 +15,9 @@ if(isset($_POST['order_btn'])){
    $name = mysqli_real_escape_string($conn, $_POST['name']);
    $number = $_POST['number'];
    $email = mysqli_real_escape_string($conn, $_POST['email']);
-   $bkash_transaction = mysqli_real_escape_string($conn, $_POST['bkash_transaction']);
+   $bkash_transaction = mysqli_real_escape_string($conn, $_POST['delivery_link']);
+   $offline_address =  mysqli_real_escape_string($conn, $_POST['delivery_address']);
+   $payment_method = mysqli_real_escape_string($conn, $_POST['delivery_method']);
    $placed_on = date('d-M-Y');
 
    $cart_total = 0;
@@ -32,7 +34,7 @@ if(isset($_POST['order_btn'])){
 
    $total_products = implode(', ',$cart_products);
 
-   $order_query = mysqli_query($conn, "SELECT * FROM `orders` WHERE name = '$name' AND number = '$number' AND email = '$email' AND bkash_transaction = '$bkash_transaction' AND total_products = '$total_products' AND total_price = '$cart_total'") or die('query failed');
+   $order_query = mysqli_query($conn, "SELECT * FROM `orders` WHERE name = '$name' AND number = '$number' AND email = '$email' AND bkash_transaction = '$bkash_transaction' AND offline_address = '$offline_address' AND total_products = '$total_products' AND total_price = '$cart_total' AND payment_method = '$payment_method'") or die('query failed');
 
    if($cart_total == 0){
       $message[] = 'your cart is empty';
@@ -40,7 +42,7 @@ if(isset($_POST['order_btn'])){
       if(mysqli_num_rows($order_query) > 0){
          $message[] = 'order already placed!'; 
       }else{
-         mysqli_query($conn, "INSERT INTO `orders`(user_id, name, number, email, bkash_transaction, total_products, total_price, placed_on) VALUES('$user_id', '$name', '$number', '$email', '$bkash_transaction', '$total_products', '$cart_total', '$placed_on')") or die('query failed');
+         mysqli_query($conn, "INSERT INTO `orders`(user_id, name, number, email, bkash_transaction, total_products, total_price, placed_on, offline_address, payment_method) VALUES('$user_id', '$name', '$number', '$email', '$bkash_transaction', '$total_products', '$cart_total', '$placed_on', '$offline_address', '$payment_method')") or die('query failed');
          $message[] = 'order placed successfully!';
          mysqli_query($conn, "DELETE FROM `cart` WHERE user_id = '$user_id'") or die('query failed');
       }
@@ -101,26 +103,58 @@ if(isset($_POST['order_btn'])){
       <h3>place your order</h3>
       <div class="flex">
          <div class="inputBox">
-            <span>your name :</span>
+            <span>Your Name :</span>
             <input type="text" name="name" required placeholder="enter your name">
          </div>
          <div class="inputBox">
-            <span>your number :</span>
+            <span>Your Phone Number :</span>
             <input type="number" name="number" required placeholder="enter your number">
          </div>
          <div class="inputBox">
-            <span>your email :</span>
+            <span>Your Email :</span>
             <input type="email" name="email" required placeholder="enter your email">
          </div>
          <div class="inputBox">
-            <span>Bkash: 01302542334</span>
-            <input type="text" name="bkash_transaction" required placeholder="Enter Bkash Transaction">
+            <span>Delivery Method :</span>
+            <select name="delivery_method" required>
+               <option value="">Select a delivery method</option>
+               <option value="Physical Delivery">Physical Delivery</option>
+               <option value="Online Delivery">Online Delivery</option>
+            </select>
+         </div>
+         <div class="inputBox" id="delivery_address" style="display:none">
+            <span>Delivery Address :</span>
+            <input type="text" name="delivery_address" placeholder="Enter your delivery address">
+         </div>
+         <div class="inputBox" id="delivery_link" style="display:none">
+            <span>Bkash: 01302542301</span>
+            <input type="text" name="delivery_link" placeholder="Enter Bkash Transaction Number After Sending Money">
          </div>
       </div>
       <input type="submit" value="order now" class="btn" name="order_btn">
    </form>
 
 </section>
+
+<script>
+   const deliveryMethodSelect = document.querySelector('select[name="delivery_method"]');
+   const deliveryAddress = document.getElementById('delivery_address');
+   const deliveryLink = document.getElementById('delivery_link');
+
+   deliveryMethodSelect.addEventListener('change', () => {
+      if (deliveryMethodSelect.value === 'Physical Delivery') {
+         deliveryAddress.style.display = 'block';
+         deliveryLink.style.display = 'none';
+      } else if (deliveryMethodSelect.value === 'Online Delivery') {
+         deliveryAddress.style.display = 'none';
+         deliveryLink.style.display = 'block';
+      } else {
+         deliveryAddress.style.display = 'none';
+         deliveryLink.style.display = 'none';
+      }
+   });
+</script>
+
 
 
 
