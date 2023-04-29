@@ -20,6 +20,10 @@ if(isset($_POST['add_product_button'])){
    $image_tmp_name = $_FILES['image']['tmp_name'];
    $image_folder = 'uploaded_img/'.$image;
 
+   $book_sample = $_FILES['book_sample']['name'];
+   $book_sample_tmp_name = $_FILES['book_sample']['tmp_name'];
+   $book_sample_folder = 'sample_book/'.$book_sample;
+
    date_default_timezone_set('Asia/Dhaka');
    $book_creation_date = date('d/m/Y h:i:s a', time());
 
@@ -44,13 +48,14 @@ if(isset($_POST['add_product_button'])){
       $product_query_id = mysqli_query($conn, "SELECT id FROM `products` WHERE name='$name'") or die('query failed');
       $fetch_id = mysqli_fetch_assoc($product_query_id);
       $final_id = $fetch_id['id'];
-      $add_current_product_details_query = mysqli_query($conn, "INSERT INTO `current_product_details`(product_id,author_name,description, book_language, page_numbers, publication_date, book_genre) VALUES('$final_id','$author_name','$book_description', '$book_language', '$book_pages','$book_publication_date', '$book_genre')") or die('query failed');
+      $add_current_product_details_query = mysqli_query($conn, "INSERT INTO `current_product_details`(book_sample, product_id,author_name,description, book_language, page_numbers, publication_date, book_genre) VALUES('$book_sample','$final_id','$author_name','$book_description', '$book_language', '$book_pages','$book_publication_date', '$book_genre')") or die('query failed');
 
       if($add_product_query){
          if($image_size > 2000000){
             $message[] = 'Image Size Is Too Big';
          }else{
             move_uploaded_file($image_tmp_name, $image_folder);
+            move_uploaded_file($book_sample_tmp_name, $book_sample_folder);
             $message[] = 'Book Has Been Added';
          }
       }else{
@@ -92,13 +97,22 @@ if(isset($_POST['update_product'])){
    $update_folder = 'uploaded_img/'.$update_image;
    $update_old_image = $_POST['update_old_image'];
 
+   $update_book_sample = $_FILES['update_book_sample']['name'];
+   $update_book_sample_tmp_name = $_FILES['update_book_sample']['tmp_name'];
+   $update_book_sample_folder = 'sample_book/'.$book_sample;
+   $update_old_book_sample = $_POST['old_book_sample'];
+   
+
    if(!empty($update_image)){
       if($update_image_size > 2000000){
          $message[] = 'image file size is too large';
       }else{
          mysqli_query($conn, "UPDATE `products` SET image = '$update_image' WHERE id = '$update_p_id'") or die('query failed');
+         mysqli_query($conn, "UPDATE `current_product_details` SET book_sample = '$update_book_sample' WHERE product_id = '$update_p_id'") or die('query failed');
          move_uploaded_file($update_image_tmp_name, $update_folder);
+         unlink('uploaded_img/'.$update_old_book_sample);
          unlink('uploaded_img/'.$update_old_image);
+         move_uploaded_file($update_book_sample_tmp_name, $update_book_sample_folder);
 
 
       }
@@ -189,6 +203,9 @@ if(isset($_POST['book_sort_button'])){
          <option value="Religion & Spirituality">Religion & Spirituality</option>
          <option value="Children">Children</option>
       </select>
+
+      <p style="font-size: 18px;">Upload Book Sample</p>
+      <input type="file" name="book_sample" accept="document_pdf/pdf" class="box" required>
 
 
       <input type="submit" value="add product" name="add_product_button" class="btn">
@@ -315,13 +332,14 @@ if(isset($_POST['book_sort_button'])){
    <form action="" method="post" enctype="multipart/form-data">
       <input type="hidden" name="update_p_id" value="<?php echo $fetch_update['id']; ?>">
       <input type="hidden" name="update_old_image" value="<?php echo $fetch_update['image']; ?>">
+      <p hidden><?php echo $fetch_update['old_book_sample'];?></p>
       <!-- <img src="uploaded_img/<?php echo $fetch_update['image']; ?>" alt=""> -->
       <input type="text" name="update_name" value="<?php echo $fetch_update['name']; ?>" class="box" required placeholder="Enter New Name">
       <input type="number" name="update_price" value="<?php echo $fetch_update['price']; ?>" min="0" class="box" required placeholder="Enter New Price">
       <input type="file" class="box" name="update_image" accept="image/jpg, image/jpeg, image/png">
       
       <input type="text" name="update_author_name" value="<?php echo $fetch_update['author_name']; ?>" class="box" required placeholder="Enter New Author Name">
-      <textarea type="text" name="update_book_description" cols="30" rows="10" class="box" required placeholder="Enter Blog New Description"><?php echo $fetch_update['description']; ?></textarea>
+      <textarea type="text" name="update_book_description" cols="30" rows="5" class="box" required placeholder="Enter Blog New Description"><?php echo $fetch_update['description']; ?></textarea>
       <input type="text" name="update_book_language" value="<?php echo $fetch_update['book_language']; ?>" class="box" required placeholder="Enter New Language">
       <input type="number" name="update_page_numbers" value="<?php echo $fetch_update['page_numbers']; ?>" min="0" class="box" required placeholder="Enter New Page Number">
       <input type="date" name="update_publication_date" value="<?php echo $fetch_update['publication_date']; ?>" class="box" required placeholder="Enter New Publication Date">
@@ -344,6 +362,8 @@ if(isset($_POST['book_sort_button'])){
          <option value="Religion & Spirituality">Religion & Spirituality</option>
          <option value="Children">Children</option>
       </select>
+
+      <input type="file" name="update_book_sample" accept="document_pdf/pdf" class="box" required>
 
       <input type="submit" value="update" name="update_product" class="btn">
       <input type="reset" value="cancel" id="close-update" class="option-btn">

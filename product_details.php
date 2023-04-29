@@ -132,7 +132,9 @@ if(isset($_POST['write_review'])){
          <form action="" method="post" enctype="multipart/form-data">
             <input type="hidden" name="update_book_id" value="<?php echo $fetch_update['id']; ?>">
 
-            <img name='product_image' src="uploaded_img/<?php echo $fetch_update['image']; ?>" alt="">
+            <a href="sample_book/<?php echo urlencode($fetch_update['book_sample']); ?>" target="_blank">
+  <img name='product_image' src="uploaded_img/<?php echo $fetch_update['image']; ?>" alt="" width="500" height="716">
+</a> 
             <p type="text" name="show_product_name" class="box" style="font-size: 20px; color: red;"><?php echo $fetch_update['name']; ?></p>
             <p type="text" name="show_book_author_name" class="box" style="font-size: 15px; color: black;">Author: <?php echo $fetch_update['author_name']; ?></p>
             <p type="text" name="show_book_title" class="box" style="font-size: 15px;">Genre: <?php echo $fetch_update['book_genre']; ?></p>
