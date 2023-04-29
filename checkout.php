@@ -15,6 +15,7 @@ if(isset($_POST['order_btn'])){
    $name = mysqli_real_escape_string($conn, $_POST['name']);
    $number = $_POST['number'];
    $email = mysqli_real_escape_string($conn, $_POST['email']);
+   $voucher = mysqli_real_escape_string($conn, $_POST['voucher']);
    $bkash_transaction = mysqli_real_escape_string($conn, $_POST['delivery_link']);
    $offline_address =  mysqli_real_escape_string($conn, $_POST['delivery_address']);
    $payment_method = mysqli_real_escape_string($conn, $_POST['delivery_method']);
@@ -22,6 +23,12 @@ if(isset($_POST['order_btn'])){
 
    $cart_total = 0;
    $cart_products[] = '';
+
+   $voucher_select = mysqli_query($conn, "SELECT vouchers.voucher_discount FROM `vouchers` WHERE vouchers.voucher_code = '$voucher' AND vouchers.voucher_expiration_date >= CURDATE()") or die('query failed');
+   if(mysqli_num_rows($voucher_select) > 0){
+      $voucher = mysqli_fetch_assoc($voucher_select);
+      $cart_total -= $voucher['voucher_discount'];
+   }
 
    $cart_query = mysqli_query($conn, "SELECT * FROM `cart` WHERE user_id = '$user_id'") or die('query failed');
    if(mysqli_num_rows($cart_query) > 0){
@@ -104,15 +111,19 @@ if(isset($_POST['order_btn'])){
       <div class="flex">
          <div class="inputBox">
             <span>Your Name :</span>
-            <input type="text" name="name" required placeholder="enter your name">
+            <input type="text" name="name" required placeholder="Enter Your Name">
          </div>
          <div class="inputBox">
             <span>Your Phone Number :</span>
-            <input type="number" name="number" required placeholder="enter your number">
+            <input type="number" name="number" required placeholder="Enter Your Number">
          </div>
          <div class="inputBox">
             <span>Your Email :</span>
-            <input type="email" name="email" required placeholder="enter your email">
+            <input type="email" name="email" required placeholder="Enter Your Email">
+         </div>
+         <div class="inputBox">
+            <span>Add A Voucher :</span>
+            <input type="text" name="voucher" required placeholder="Enter Voucher">
          </div>
          <div class="inputBox">
             <span>Delivery Method :</span>

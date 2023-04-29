@@ -104,7 +104,6 @@ if(isset($_POST['submit_blog_search'])){
          <option value="Offers">Offers</option>
       </select>
       
-      <!-- <input type="text" name="blog_details" class="box" placeholder="Write Your Blog" style="height:120px; width:459px;" required> -->
       
       <input type="submit" value="Post" name="add_blog" class="btn">
    </form>
