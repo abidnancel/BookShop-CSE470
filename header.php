@@ -21,9 +21,6 @@ if(isset($message)){
             <a href="home.php">Home</a>
             <a href="shop.php">All Books</a>
             <a href="user_blogs.php">Board</a>
-            <a href="orders.php">Order History</a>
-            
-            <a href="contact.php">Contact</a>
             <a href="about.php">About</a>
             <a href="book_suggestion.php" class="btn" style="color: White;">Can't Decide?</a>
          </nav>
