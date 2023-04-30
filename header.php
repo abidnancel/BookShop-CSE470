@@ -43,7 +43,7 @@ if(isset($message)){
          <div class="user-box">
             <p>Username : <span><?php echo $_SESSION['user_name']; ?></span></p>
             <p>Email : <span><?php echo $_SESSION['user_email']; ?></span></p>
-            <a href="user_profile.php" class="option-btn">Profile</a>
+            <a href="user_dashboard.php" class="option-btn">Profile</a>
             <a href="logout.php" class="delete-btn">Logout</a>
          </div>
       </div>
