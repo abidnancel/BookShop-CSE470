@@ -52,8 +52,8 @@ if(isset($_POST['add_to_cart'])){
 <?php include 'header.php'; ?>
 
 <div class="heading">
-   <h3>Book Suggestion</h3>
-   <p> <a href="home.php">Home</a> / Can't Decide? </p>
+   <h3 style="color: white;">Book Suggestion</h3>
+   <p style="color: #ccc;"> <a href="home.php">Home</a> / Can't Decide? </p>
 </div>
 
 <section class="add-products">

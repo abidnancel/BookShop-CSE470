@@ -54,7 +54,7 @@ if(isset($_POST['book_sort_button'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>shop</title>
+   <title>All Books</title>
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -69,8 +69,8 @@ if(isset($_POST['book_sort_button'])){
 <?php include 'header.php'; ?>
 
 <div class="heading">
-   <h3>Our Books</h3>
-   <p> <a href="home.php">Home</a> / All Books </p>
+   <h3 style="color: white;">Our Books</h3>
+   <p style="color: #ccc;"> <a href="home.php">Home</a> / All Books </p>
 </div>
 
 <section class="products">

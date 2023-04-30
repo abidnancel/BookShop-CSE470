@@ -39,7 +39,7 @@ if(isset($_GET['delete'])){
 
 <section class="users">
 
-   <h1 class="title"> user accounts </h1>
+   <h1 class="title"> Admin User Control </h1>
 
    <div class="box-container">
       <?php

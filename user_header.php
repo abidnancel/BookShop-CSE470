@@ -47,6 +47,7 @@ if(isset($message)){
       <br>
       <p><img src="uploaded_img/profile_image/<?php echo $fetch_data['user_profile_pic']; ?>" alt="No User Logo" style="width: 150px; height: 200px; display: block; margin: 0 auto;"></p>
       <a href="user_dashboard.php"><i class="fas fa-home"></i><span>Dashboard</span></a>
+      <a href="user_wishlist.php"><i class="fas fa-heart"></i><span>Wishlist</span></a>
       <a href="user_order.php"><i class="fa-solid fa-users"></i><span>Ordered</span></a>
       <a href="user_message.php"><i class="fa-solid fa-message"></i><span>User Messages</span></a>
       <a href="user_profile.php"><i class="fa-solid fa-square-poll-horizontal"></i><span>User Profile</span></a>

@@ -10,6 +10,22 @@ if(!isset($user_id)){
    header('location:login.php');
 }
 
+if(isset($_POST['add_to_wishlist'])){
+
+   $wishlist_user_id = $_SESSION['user_id'];
+   $wishlist_book_id = $_POST['update_book_id'];
+
+   $check_cart_numbers = mysqli_query($conn, "SELECT * FROM `wishlist` WHERE wishlist_user_id = '$wishlist_user_id' AND wishlist_book_id = '$wishlist_book_id'") or die('query failed');
+
+   if(mysqli_num_rows($check_cart_numbers) > 0){
+      $message[] = 'You have already wishlisted this book!';
+   }else{
+      mysqli_query($conn, "INSERT INTO `wishlist`(wishlist_user_id, wishlist_book_id) VALUES('$wishlist_user_id', '$wishlist_book_id')") or die('query failed');
+      $message[] = 'Added to the wishlist!';
+   }
+
+}
+
 if(isset($_POST['add_to_cart'])){
 
    $product_name = $_POST['product_name'];
@@ -57,7 +73,7 @@ if(isset($_POST['write_review'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Reviews</title>
+   <title>Product Details</title>
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -114,8 +130,8 @@ if(isset($_POST['write_review'])){
 <?php include 'header.php'; ?>
 
 <div class="heading">
-   <h3>Reviews</h3>
-   <p> <a href="home.php">Home</a> / Reviews </p>
+   <h3 style="color: white;">Book Details</h3>
+   <p style="color: #ccc;"> <a href="home.php">Home</a> / Book Details </p>
 </div>
 
 <!-- This is for search, category, dropdown dropdown menu ENDS -->
@@ -128,13 +144,17 @@ if(isset($_POST['write_review'])){
       $update_query = mysqli_query($conn, "SELECT * FROM `products` INNER JOIN `current_product_details` on products.id = current_product_details.product_id WHERE id = '{$book_detail_id}'") or die('query failed');
          if(mysqli_num_rows($update_query) > 0){
             while($fetch_update = mysqli_fetch_assoc($update_query)){
-   ?>
+               
+   ?>    
+             
+      
          <form action="" method="post" enctype="multipart/form-data">
+        
             <input type="hidden" name="update_book_id" value="<?php echo $fetch_update['id']; ?>">
+            
 
             <a href="sample_book/<?php echo urlencode($fetch_update['book_sample']); ?>" target="_blank">
-  <img name='product_image' src="uploaded_img/<?php echo $fetch_update['image']; ?>" alt="" width="500" height="716">
-</a> 
+  <img name='product_image' src="uploaded_img/<?php echo $fetch_update['image']; ?>" alt="" width="500" height="716"></a> 
             <p type="text" name="show_product_name" class="box" style="font-size: 20px; color: red;"><?php echo $fetch_update['name']; ?></p>
             <p type="text" name="show_book_author_name" class="box" style="font-size: 15px; color: black;">Author: <?php echo $fetch_update['author_name']; ?></p>
             <p type="text" name="show_book_title" class="box" style="font-size: 15px;">Genre: <?php echo $fetch_update['book_genre']; ?></p>
@@ -144,8 +164,9 @@ if(isset($_POST['write_review'])){
             
             <p type="text" name="show_book_title" class="box" style="font-size: 15px;">Publication Date: <?php echo $fetch_update['publication_date']; ?></p>
             <input type="number" min="1" name="product_quantity" value="1" class="qty">
+
+            <input type="submit" value="Add to Wishlist" name="add_to_wishlist" class="btn" style="background-color: green;">
             <input type="submit" value="add to cart" name="add_to_cart" class="btn">
-            <input type="reset" value="cancel" id="close-update" class="option-btn" onclick="window.location = 'shop.php'">
 
             <input type="hidden" name="product_name" value="<?php echo $fetch_update['name']; ?>">
             <input type="hidden" name="product_price" value="<?php echo $fetch_update['price']; ?>">
@@ -170,6 +191,7 @@ if(isset($_POST['write_review'])){
                if(mysqli_num_rows($check_book_query) > 0){
                   while($fetch_update = mysqli_fetch_assoc($check_book_query)){
          ?>
+         
          <h1 class='title'>Write A Review</h1>
          <form action="" method="post" enctype="multipart/form-data">
             <input type="hidden" name="update_p_id" value="<?php echo $fetch_update['id']; ?>">

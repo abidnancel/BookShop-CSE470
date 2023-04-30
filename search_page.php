@@ -36,7 +36,7 @@ if(isset($_POST['add_to_cart'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>search page</title>
+   <title>Search Page</title>
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -50,8 +50,8 @@ if(isset($_POST['add_to_cart'])){
 <?php include 'header.php'; ?>
 
 <div class="heading">
-   <h3>search page</h3>
-   <p> <a href="home.php">Home</a> / Search </p>
+   <h3 style="color: white;">search page</h3>
+   <p style="color: #ccc;"> <a href="home.php">Home</a> / Search </p>
 </div>
 
 <section class="search-form">
@@ -79,6 +79,7 @@ if(isset($_POST['add_to_cart'])){
       <input type="hidden" name="product_name" value="<?php echo $fetch_product['name']; ?>">
       <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
       <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
+      <a href="product_details.php?update=<?php echo $fetch_products['id']; ?>" class="btn">Book Details</a>
       <input type="submit" class="btn" value="add to cart" name="add_to_cart">
    </form>
    <?php
