@@ -15,7 +15,10 @@ if(isset($_POST['update_order'])){
    $order_update_id = $_POST['order_id'];
    $update_payment = $_POST['update_payment'];
    mysqli_query($conn, "UPDATE `orders` SET payment_status = '$update_payment' WHERE id = '$order_update_id'") or die('query failed');
-   $message[] = 'payment status has been updated!';
+   if($update_payment == 'Paid'){
+      $message[] = 'Order Status Updated';
+   }else if($update_payment == 'Delivered'){
+      $message[] = 'Order Has Been Delivered';}
 
 }
 
@@ -70,7 +73,8 @@ if(isset($_GET['delete'])){
             <select name="update_payment">
                <option value="" selected disabled><?php echo $fetch_orders['payment_status']; ?></option>
                <option value="pending">pending</option>
-               <option value="completed">completed</option>
+               <option value="Paid">Paid</option>
+               <option value="Delivered">Delivered</option>
             </select>
             <input type="submit" value="update" name="update_order" class="option-btn">
             <a href="admin_orders.php?delete=<?php echo $fetch_orders['id']; ?>" onclick="return confirm('delete this order?');" class="delete-btn">delete</a>

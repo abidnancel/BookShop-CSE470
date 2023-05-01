@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 30, 2023 at 10:29 AM
+-- Generation Time: May 01, 2023 at 02:07 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -59,6 +59,14 @@ CREATE TABLE `cart` (
   `image` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `user_id`, `name`, `price`, `quantity`, `image`) VALUES
+(24, 4, 'asd', 213, 1, '337042535_221668020435983_2077114486837850193_n.jpg'),
+(25, 4, 'weq', 232, 1, '5.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -108,7 +116,10 @@ INSERT INTO `message` (`message_id`, `message_sender_id`, `message_receiver_id`,
 (1, 3, 4, 'I am the admin', '2023-04-30 07:58:29'),
 (2, 4, 3, 'I am the user', '2023-04-30 08:06:26'),
 (3, 4, 3, 'hey there bro', '2023-04-30 08:10:34'),
-(4, 3, 4, 'I am the admin 2', '2023-04-30 07:58:29');
+(4, 3, 4, 'I am the admin 2', '2023-04-30 07:58:29'),
+(5, 3, 4, 'Admin 3', '2023-04-30 08:38:23'),
+(6, 3, 4, 'admin speaking 4', '2023-04-30 08:52:48'),
+(7, 4, 3, 'user speaking 3', '2023-04-30 08:54:09');
 
 -- --------------------------------------------------------
 
@@ -136,7 +147,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `name`, `number`, `email`, `bkash_transaction`, `offline_address`, `total_products`, `total_price`, `placed_on`, `payment_status`, `payment_method`) VALUES
-(1, 3, 'Tshirt', '0130', 'abid@gmail.com', 'Bkash', NULL, '1', 100, '01/10/2020', 'pending', ''),
+(1, 3, 'Tshirt', '0130', 'abid@gmail.com', 'Bkash', NULL, '1', 100, '01/10/2020', 'Delivered', ''),
 (3, 4, 'Anas Mahmud Abid', '123', '12@gmail.com', '123', NULL, ', Berserk Volume 1 (1) ', 5999, '25-Apr-2023', 'pending', ''),
 (4, 4, 'Offline Delivery', '213', 'offline@gmail.com', '', 'My address', ', Berserk Volume 1 (1) ', 5999, '28-Apr-2023', 'pending', ''),
 (5, 4, 'Berserk Online', '2313', 'online@gmail.com', '$#JIF_(#I$#(FUIO', '', ', Berserk Volume 1 (3) ', 17997, '28-Apr-2023', 'pending', ''),
@@ -202,6 +213,8 @@ CREATE TABLE `users` (
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
+  `user_profile_pic` varchar(100) DEFAULT NULL,
+  `temp_code` int(100) NOT NULL,
   `user_type` varchar(20) NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -209,9 +222,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `user_type`) VALUES
-(3, 'Abid', 'abid@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'admin'),
-(4, 'user', 'user@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 'user');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `user_profile_pic`, `temp_code`, `user_type`) VALUES
+(3, 'Abid', 'abid@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', '0', 0, 'admin'),
+(4, 'user1', 'alsolinnancel@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '9781506711980.jpg', 1132486382, 'user');
 
 -- --------------------------------------------------------
 
@@ -233,6 +246,27 @@ CREATE TABLE `vouchers` (
 
 INSERT INTO `vouchers` (`voucher_id`, `voucher_code`, `voucher_discount`, `voucher_creation_date`, `voucher_expiration_date`) VALUES
 (1, 'EID45', 45, '2023-04-29 02:17:33', '2023-05-03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wishlist`
+--
+
+CREATE TABLE `wishlist` (
+  `wishlist_id` int(100) NOT NULL,
+  `wishlist_user_id` int(100) NOT NULL,
+  `wishlist_book_id` int(100) NOT NULL,
+  `wishlist_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `wishlist`
+--
+
+INSERT INTO `wishlist` (`wishlist_id`, `wishlist_user_id`, `wishlist_book_id`, `wishlist_time`) VALUES
+(1, 4, 11, '2023-04-30 19:09:48'),
+(2, 4, 12, '2023-04-30 19:44:22');
 
 --
 -- Indexes for dumped tables
@@ -295,6 +329,12 @@ ALTER TABLE `vouchers`
   ADD PRIMARY KEY (`voucher_id`);
 
 --
+-- Indexes for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD PRIMARY KEY (`wishlist_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -308,13 +348,13 @@ ALTER TABLE `admin_news`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `message_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `message_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -345,6 +385,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `vouchers`
   MODIFY `voucher_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  MODIFY `wishlist_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

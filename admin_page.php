@@ -98,7 +98,7 @@ if(!isset($admin_id)){
       <div class="box">
          <?php 
             
-            $select_messages = mysqli_query($conn, "SELECT count(id) as total_messages from message;") or die('query failed');
+            $select_messages = mysqli_query($conn, "SELECT count(message_id) as total_messages from message GROUP BY message_sender_id;") or die('query failed');
             $number_of_messages = 0;
             if(mysqli_num_rows($select_messages) > 0){
                while($fetch_users = mysqli_fetch_assoc($select_messages)){

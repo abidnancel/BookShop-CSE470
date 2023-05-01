@@ -75,6 +75,7 @@ if(isset($message)){
       <input type="email" name="email" placeholder="Enter Your Email" required class="box">
       <input type="password" name="password" placeholder="Enter Your Passowrd" required class="box">
       <input type="submit" name="submit" value="Login Now" class="btn">
+      <p>Forgot Password? <a href="forgot_password_email.php">Reset Now</a></p>
       <p>Don't have an account? <a href="register.php">Register Now</a></p>
    </form>
 
