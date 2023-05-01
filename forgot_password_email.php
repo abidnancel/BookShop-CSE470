@@ -26,12 +26,12 @@ if(isset($_POST['reset_password'])){
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'sunakodesu123@gmail.com';
-        $mail->Password = 'htfhfazgjpekrjlk';
+        $mail->Username = '@gmail.com';
+        $mail->Password = ''; //App Password
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
-        $mail->setFrom('sunakodesu123@gmail.com');
+        $mail->setFrom('@gmail.com');
         $mail->addAddress($email);
 
         $mail->isHTML(true);
